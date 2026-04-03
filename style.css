@@ -4,3 +4,7 @@ body {
 	 */
   font: 100%/1.5 system-ui;
 }
+nav {
+  margin-top: 15px;
+  font-weight: 500;
+}

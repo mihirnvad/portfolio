@@ -83,3 +83,57 @@ h6 {
   line-height: 1.1;
   text-wrap: balance;
 }
+
+.resume-page {
+  max-width: 80ch;
+}
+
+.resume-page h1 {
+  margin-bottom: 0.25em;
+}
+
+.resume-page p {
+  margin: 0.25em 0;
+}
+
+.resume-page section {
+  margin-block: 2em;
+}
+
+.resume-page h2 {
+  font-size: 1.5rem;
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 0.3em;
+  margin-bottom: 1em;
+}
+
+.resume-page article {
+  margin-bottom: 1.5em;
+}
+
+.resume-page article header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1em;
+  flex-wrap: wrap;
+}
+
+.resume-page h3 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.resume-page time {
+  color: #666;
+  font-size: 0.95rem;
+}
+
+.resume-page ul {
+  margin-top: 0.5em;
+  padding-left: 1.25em;
+}
+
+.resume-page li {
+  margin-bottom: 0.35em;
+}

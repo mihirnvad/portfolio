@@ -15,7 +15,7 @@ let pages = [
 const BASE_PATH =
   (location.hostname === "localhost" || location.hostname === "127.0.0.1")
     ? "/"
-    : "/website/";
+    : "/portfolio/"; // replace website with your repo name
 
 let nav = document.createElement('nav');
 document.body.prepend(nav);
@@ -23,13 +23,21 @@ document.body.prepend(nav);
 for (let p of pages) {
   let url = p.url;
 
-  url = !url.startsWith('http') ? BASE_PATH + url : url;
+  if (!url.startsWith('http')) {
+    url = BASE_PATH + url;
+  }
 
-  let isCurrent =
-    location.pathname === BASE_PATH + p.url;
+  let a = document.createElement('a');
+  a.href = url;
+  a.textContent = p.title;
 
-  nav.insertAdjacentHTML(
-    'beforeend',
-    `<a href="${url}" class="${isCurrent ? 'current' : ''}">${p.title}</a>`
-  );
+  if (a.host === location.host && a.pathname === location.pathname) {
+    a.classList.add('current');
+  }
+
+  if (a.host !== location.host) {
+    a.target = '_blank';
+  }
+
+  nav.append(a);
 }

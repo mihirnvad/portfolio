@@ -137,3 +137,12 @@ h6 {
 .resume-page li {
   margin-bottom: 0.35em;
 }
+
+html {
+  color-scheme: light dark;
+}
+
+body {
+  background-color: canvas;
+  color: canvastext;
+}

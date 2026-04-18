@@ -10,9 +10,8 @@ body {
 nav {
   display: flex;
   margin-bottom: 15px;
-  border-bottom-width: 1px;
-  border-bottom-style: solid;
-  border-bottom-color: oklch(80% 3% 200); 
+  border-bottom: 1px solid var(--border-color);
+  --border-color: oklch(50% 10% 200 / 40%);
 }
 nav a {
   flex: 1;

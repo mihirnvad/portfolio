@@ -145,3 +145,17 @@ body {
   background-color: canvas;
   color: canvastext;
 }
+
+.color-scheme {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 70%;
+}
+
+input,
+textarea,
+button,
+select {
+  font-family: inherit;
+}

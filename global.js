@@ -15,7 +15,40 @@ let pages = [
 const BASE_PATH =
   (location.hostname === "localhost" || location.hostname === "127.0.0.1")
     ? "/"
-    : "/portfolio/"; // replace website with your repo name
+    : "/portfolio/";
+
+document.body.insertAdjacentHTML(
+  'afterbegin',
+  `
+  <label class="color-scheme">
+    Theme:
+    <select id="theme-select">
+      <option value="light dark">Automatic</option>
+      <option value="light">Light</option>
+      <option value="dark">Dark</option>
+    </select>
+  </label>
+  `
+);
+
+const select = document.querySelector("#theme-select");
+
+function setColorScheme(colorScheme) {
+  document.documentElement.style.setProperty('color-scheme', colorScheme);
+  select.value = colorScheme;
+}
+
+if ('colorScheme' in localStorage) {
+  setColorScheme(localStorage.colorScheme);
+}
+
+select.addEventListener('input', function (event) {
+  const value = event.target.value;
+
+  setColorScheme(value);
+  localStorage.colorScheme = value;
+});
+
 
 let nav = document.createElement('nav');
 document.body.prepend(nav);

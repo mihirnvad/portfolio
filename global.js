@@ -6,8 +6,6 @@ function $$(selector, context = document) {
 
 const navLinks = $$("nav a");
 
-navLinks.forEach(link => {
-  if (link.href === window.location.href) {
-    link.classList.add("current");
-  }
-});
+let currentLink = navLinks.find((a) => a.host === location.host && a.pathname === location.pathname);
+
+currentLink?.classList.add("current");

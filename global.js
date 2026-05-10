@@ -9,7 +9,8 @@ let pages = [
   { url: 'projects/', title: 'Projects'},
   { url: 'contact/', title: 'Contact'},
   { url: 'resume/', title: 'Resume'},
-  { url: 'https://github.com/mihirnvad', title: 'Github'}
+  { url: 'https://github.com/mihirnvad', title: 'Github'},
+  { url : 'meta/', title: 'Meta'}
 ];
 
 const BASE_PATH =

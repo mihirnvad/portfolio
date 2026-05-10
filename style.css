@@ -247,3 +247,81 @@ select {
 .selected:is(path) {
   fill: var(--color);
 }
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10em, 1fr));
+  gap: 1em;
+}
+
+.stats dt {
+  font-weight: bold;
+}
+
+.stats dd {
+  margin: 0;
+}
+
+.gridlines line {
+  stroke: #ddd;
+  stroke-opacity: 0.6;
+  shape-rendering: crispEdges;
+}
+
+.gridlines path {
+  display: none;
+}
+dl.info {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.25em 1em;
+}
+
+dl.info dt {
+  color: #666;
+  font-weight: bold;
+}
+
+dl.info dd {
+  margin: 0;
+}
+
+.tooltip {
+  position: fixed;
+  top: 1em;
+  left: 1em;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 0.5em;
+  padding: 1em;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 20%);
+}
+
+circle {
+  transition: 200ms;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+
+circle:hover {
+  transform: scale(1.5);
+}
+
+.tooltip[hidden] {
+  display: none !important;
+}
+
+.tooltip {
+  position: fixed !important;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 0.5em;
+  padding: 1em;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 20%);
+  pointer-events: none;
+  z-index: 1000;
+}
+
+circle.selected {
+  fill: #ff6b6b;
+}

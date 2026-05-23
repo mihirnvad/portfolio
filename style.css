@@ -325,3 +325,164 @@ circle:hover {
 circle.selected {
   fill: #ff6b6b;
 }
+.meta-page .slider-container {
+  margin-block: 1rem 2rem;
+}
+
+.meta-page #commit-progress {
+  width: 100%;
+  max-width: 600px;
+}
+
+.meta-page #commit-time-filter {
+  display: block;
+  margin-top: 0.5rem;
+}
+
+.meta-page #scrolly-1 {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.meta-page #scatter-story {
+  grid-column: 1;
+}
+
+.meta-page #scatter-plot {
+  grid-column: 2;
+  position: sticky;
+  top: 1rem;
+  height: fit-content;
+}
+
+.meta-page .step {
+  padding-bottom: 80vh;
+  line-height: 1.5;
+}
+
+.meta-page #chart svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.meta-page #files {
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  gap: 0.5rem 1rem;
+  margin-top: 1rem;
+}
+
+.meta-page #files > div {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: subgrid;
+  padding-block: 0.75rem;
+  border-bottom: 1px solid color-mix(in oklch, canvasText 15%, transparent);
+}
+
+.meta-page #files dt {
+  grid-column: 1;
+}
+
+.meta-page #files dt small {
+  display: block;
+  opacity: 0.7;
+  font-size: 0.8em;
+  margin-top: 0.25rem;
+}
+
+.meta-page #files dd {
+  grid-column: 2;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.15em;
+  margin: 0;
+  padding-top: 0.4em;
+}
+
+.meta-page .loc {
+  width: 0.5em;
+  aspect-ratio: 1;
+  background: var(--color, steelblue);
+  border-radius: 50%;
+}
+
+.meta-page #files {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.meta-page #files > div {
+  display: grid;
+  grid-template-columns: 14rem 1fr;
+  gap: 1rem;
+  align-items: start;
+  padding-block: 0.5rem;
+  border-bottom: 1px solid color-mix(in oklch, canvasText 15%, transparent);
+}
+
+.meta-page #files dt {
+  margin: 0;
+}
+
+.meta-page #files dt code {
+  display: block;
+  font-size: 0.9rem;
+}
+
+.meta-page #files dt small {
+  display: block;
+  opacity: 0.7;
+  margin-top: 0.25rem;
+  font-size: 0.8rem;
+}
+
+.meta-page #files dd {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.15rem;
+  align-items: flex-start;
+}
+
+.meta-page .loc {
+  width: 0.5rem;
+  height: 0.5rem;
+  background: var(--color, steelblue);
+  border-radius: 50%;
+  flex: 0 0 auto;
+}
+
+.meta-page #scrolly-1 {
+  display: grid;
+  grid-template-columns: minmax(250px, 1fr) minmax(450px, 1.6fr);
+  gap: 2rem;
+  align-items: start;
+}
+
+.meta-page #scatter-story {
+  grid-column: 1;
+}
+
+.meta-page #scatter-plot {
+  grid-column: 2;
+  position: sticky;
+  top: 1rem;
+  height: fit-content;
+}
+
+.meta-page .step {
+  padding-bottom: 80vh;
+  line-height: 1.5;
+}
+
+.meta-page #chart svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}

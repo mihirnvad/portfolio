@@ -344,7 +344,7 @@ circle.selected {
   grid-template-columns: 0.7fr 2.3fr;
   gap: 2rem;
   align-items: start;
-  width: min(1200px, calc(100vw - 40px));
+  width: min(960px, calc(100vw - 40px));
   margin-left: 50%;
   transform: translateX(-50%);
 }
@@ -463,10 +463,10 @@ circle.selected {
 
 .meta-page #scrolly-1 {
   display: grid;
-  grid-template-columns: minmax(200px, 0.7fr) minmax(700px, 2.3fr);
+  grid-template-columns: minmax(160px, 0.7fr) minmax(560px, 2.3fr);
   gap: 2rem;
   align-items: start;
-  width: min(1200px, calc(100vw - 40px));
+  width: min(960px, calc(100vw - 40px));
   margin-left: 50%;
   transform: translateX(-50%);
 }

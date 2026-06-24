@@ -9,18 +9,35 @@
     <script type="module" src="projects.js"></script>
 </head>
 <body>
-    <h1 class="projects-title">Projects</h1>
-    <div class="projects-visualization">
-    <svg id="projects-pie-plot" viewBox="-50 -50 100 100"></svg>
-    <ul class="legend"></ul>
-    </div>
+    <header class="page-intro">
+        <p class="eyebrow">Selected work</p>
+        <h1 class="projects-title">Projects</h1>
+        <p class="lede">
+            A collection of public GitHub repositories from coursework and independent
+            portfolio development, covering Python packages, data pipelines, notebooks,
+            maps, and web visualization.
+        </p>
+    </header>
 
-    <input
-    class="searchBar"
-    type="search"
-    aria-label="Search projects"
-    placeholder="Search projects..."
-    />
+    <section class="projects-controls" aria-label="Project filters">
+        <div>
+            <p class="eyebrow">Focus areas</p>
+            <div class="projects-visualization">
+                <svg id="projects-pie-plot" viewBox="-50 -50 100 100" role="img" aria-label="Projects by focus area"></svg>
+                <ul class="legend"></ul>
+            </div>
+        </div>
+
+        <label class="project-search">
+            <span>Search projects</span>
+            <input
+            class="searchBar"
+            type="search"
+            aria-label="Search projects"
+            placeholder="Try Python, OpenAI, dashboards, or C++"
+            />
+        </label>
+    </section>
 
     <div class="projects"></div>
 

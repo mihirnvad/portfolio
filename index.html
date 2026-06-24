@@ -9,20 +9,33 @@
     <script src="index.js" type="module" defer></script>
 </head>
 <body>
-    <h1> Mihir Vad</h1>
-    <p> Hi, I am a 3rd Data Science Major at UCSD and this is a portfolio website I made! 
-        Here is a picture of my dog. His name is Tiger and he is a golden retriever who is 10 years old.</p>
-    <img src = "images/tiger" alt = "My dog at Christmas" width = "300" height = "400"/>
-    <br>
-  <h2>Latest Projects</h2>
-  <div class="projects">
+  <header class="home-hero">
+    <div class="home-hero__copy">
+      <p class="eyebrow">Data Science + Software Engineering</p>
+      <h1>Mihir Vad</h1>
+      <p class="lede">
+        UC San Diego student studying Data Science and Mathematics-Computer Science,
+        with project work spanning Python tooling, reproducible data pipelines,
+        interactive visualization, and web development.
+      </p>
+      <div class="home-actions">
+        <a href="projects/">View Projects</a>
+        <a href="https://github.com/mihirnvad" target="_blank" rel="noopener">GitHub Profile</a>
+      </div>
+    </div>
+  </header>
 
-  </div>
+  <section class="section-heading">
+    <p class="eyebrow">Recent public repositories</p>
+    <h2>GitHub Projects</h2>
+  </section>
+  <div class="projects"></div>
 
-  <h2>GitHub Stats</h2>
-  <div id="profile-stats">
-    
-  </div>
+  <section class="section-heading">
+    <p class="eyebrow">Open source snapshot</p>
+    <h2>GitHub Stats</h2>
+  </section>
+  <div id="profile-stats"></div>
 
 </body>
 </html>

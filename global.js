@@ -80,8 +80,6 @@ export async function fetchJSON(url) {
   try {
     const response = await fetch(url);
 
-    console.log(response);
-
     if (!response.ok) {
       throw new Error(`Failed to fetch projects: ${response.statusText}`);
     }
@@ -90,7 +88,85 @@ export async function fetchJSON(url) {
     return data;
   } catch (error) {
     console.error('Error fetching or parsing JSON data:', error);
+    return null;
   }
+}
+
+function sanitizeClassName(value) {
+  return String(value || 'project')
+    .toLowerCase()
+    .replace(/[^a-z0-9-]/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
+function createProjectVisual(project) {
+  const visualName = sanitizeClassName(project.visual || project.category);
+  const figure = document.createElement('figure');
+
+  figure.className = `project-visual project-visual--${visualName}`;
+  figure.setAttribute('role', 'img');
+  figure.setAttribute(
+    'aria-label',
+    `${project.title} visual preview for ${project.category || 'portfolio work'}`
+  );
+
+  for (const mark of ['primary', 'secondary', 'tertiary', 'quaternary']) {
+    const span = document.createElement('span');
+    span.className = `project-visual__mark project-visual__mark--${mark}`;
+    figure.append(span);
+  }
+
+  const caption = document.createElement('figcaption');
+  caption.className = 'project-visual__label';
+  caption.textContent = project.category || 'Project';
+  figure.append(caption);
+
+  return figure;
+}
+
+function createProjectMedia(project) {
+  if (project.image) {
+    const image = document.createElement('img');
+    image.src = project.image;
+    image.alt = project.imageAlt || `${project.title} preview`;
+    image.loading = 'lazy';
+    return image;
+  }
+
+  return createProjectVisual(project);
+}
+
+function appendList(items, className, containerElement) {
+  if (!Array.isArray(items) || items.length === 0) {
+    return;
+  }
+
+  const list = document.createElement('ul');
+  list.className = className;
+
+  for (const item of items) {
+    const listItem = document.createElement('li');
+    listItem.textContent = item;
+    list.append(listItem);
+  }
+
+  containerElement.append(list);
+}
+
+function appendProjectLink(project, containerElement) {
+  if (!project.url) {
+    return;
+  }
+
+  const link = document.createElement('a');
+  link.className = 'project-link';
+  link.href = project.url;
+  link.target = '_blank';
+  link.rel = 'noopener';
+  link.textContent = 'View repository';
+
+  containerElement.append(link);
 }
 
 export function renderProjects(projects, containerElement, headingLevel = 'h2') {
@@ -115,16 +191,38 @@ export function renderProjects(projects, containerElement, headingLevel = 'h2') 
 
   for (const project of projects) {
     const article = document.createElement('article');
+    const body = document.createElement('div');
+    const heading = document.createElement(headingLevel);
+    const meta = document.createElement('p');
+    const repo = document.createElement('p');
+    const description = document.createElement('p');
 
-    article.innerHTML = `
-      <${headingLevel}>${project.title}</${headingLevel}>
-      <img src="${project.image}" alt="${project.title}">
-      <div>
-        <p>${project.description}</p>
-        <p class="project-year">${project.year}</p>
-      </div>
-    `;
+    article.className = 'project-card';
+    body.className = 'project-card__body';
 
+    heading.textContent = project.title;
+
+    meta.className = 'project-card__meta';
+    meta.textContent = [project.year, project.category].filter(Boolean).join(' / ');
+
+    repo.className = 'project-card__repo';
+    repo.textContent = project.repo ? `GitHub: ${project.repo}` : '';
+
+    description.className = 'project-card__description';
+    description.textContent = project.description;
+
+    body.append(heading, meta);
+
+    if (project.repo) {
+      body.append(repo);
+    }
+
+    body.append(description);
+    appendList(project.highlights, 'project-highlights', body);
+    appendList(project.tools, 'project-tools', body);
+    appendProjectLink(project, body);
+
+    article.append(createProjectMedia(project), body);
     containerElement.appendChild(article);
   }
 }

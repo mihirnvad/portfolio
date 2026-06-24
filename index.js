@@ -1,17 +1,17 @@
 import { fetchJSON, renderProjects, fetchGitHubData } from './global.js';
 
-const projects = await fetchJSON('./lib/projects.json');
+const projects = (await fetchJSON('./lib/projects.json')) ?? [];
 const latestProjects = projects.slice(0, 3);
 
 const projectsContainer = document.querySelector('.projects');
 
-renderProjects(latestProjects, projectsContainer, 'h2');
+renderProjects(latestProjects, projectsContainer, 'h3');
 
 const githubData = await fetchGitHubData('mihirnvad');
 
 const profileStats = document.querySelector('#profile-stats');
 
-if (profileStats) {
+if (profileStats && githubData) {
   profileStats.innerHTML = `
     <dl>
       <dt>Public Repos:</dt><dd>${githubData.public_repos}</dd>
@@ -20,4 +20,6 @@ if (profileStats) {
       <dt>Following:</dt><dd>${githubData.following}</dd>
     </dl>
   `;
+} else if (profileStats) {
+  profileStats.innerHTML = '<p class="muted">GitHub stats are temporarily unavailable.</p>';
 }

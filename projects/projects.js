@@ -1,7 +1,6 @@
 import { fetchJSON, renderProjects } from '../global.js';
-import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm';
 
-const projects = await fetchJSON('../lib/projects.json');
+const projects = (await fetchJSON('../lib/projects.json')) ?? [];
 
 const projectsContainer = document.querySelector('.projects');
 const projectsTitle = document.querySelector('.projects-title');
@@ -9,11 +8,17 @@ const searchInput = document.querySelector('.searchBar');
 
 let query = '';
 let selectedIndex = -1;
+const SVG_NS = 'http://www.w3.org/2000/svg';
+const colors = ['#4e79a7', '#f28e2b', '#59a14f', '#e15759', '#76b7b2', '#edc948'];
 
-projectsTitle.textContent = `${projects.length} Projects`;
+updateProjectsTitle(projects.length);
 
 renderProjects(projects, projectsContainer, 'h2');
 renderPieChart(projects);
+
+function updateProjectsTitle(count) {
+  projectsTitle.textContent = `${count} Project${count === 1 ? '' : 's'}`;
+}
 
 function getFilteredProjects() {
   return projects.filter((project) => {
@@ -23,71 +28,107 @@ function getFilteredProjects() {
 }
 
 function renderPieChart(projectsGiven) {
-  const svg = d3.select('#projects-pie-plot');
-  const legend = d3.select('.legend');
+  const svg = document.querySelector('#projects-pie-plot');
+  const legend = document.querySelector('.legend');
 
-  svg.selectAll('path').remove();
-  legend.selectAll('li').remove();
+  svg.replaceChildren();
+  legend.replaceChildren();
 
-  const rolledData = d3.rollups(
-    projectsGiven,
-    (v) => v.length,
-    (d) => d.year
-  );
+  const data = getCategoryData(projectsGiven);
+  const total = data.reduce((sum, d) => sum + d.value, 0);
 
-  const data = rolledData.map(([year, count]) => {
-    return { value: count, label: year };
-  });
+  if (total === 0) {
+    return;
+  }
 
-  const sliceGenerator = d3.pie().value((d) => d.value);
-  const arcData = sliceGenerator(data);
+  let startAngle = -Math.PI / 2;
 
-  const arcGenerator = d3.arc().innerRadius(0).outerRadius(50);
-  const arcs = arcData.map((d) => arcGenerator(d));
+  data.forEach((d, i) => {
+    const endAngle = startAngle + (d.value / total) * Math.PI * 2;
+    const slice = data.length === 1
+      ? document.createElementNS(SVG_NS, 'circle')
+      : document.createElementNS(SVG_NS, 'path');
 
-  const colors = d3.scaleOrdinal(d3.schemeTableau10);
+    if (slice.tagName === 'circle') {
+      slice.setAttribute('r', 50);
+    } else {
+      slice.setAttribute('d', describeSlice(startAngle, endAngle));
+    }
 
-  arcs.forEach((arc, i) => {
-    svg
-      .append('path')
-      .attr('d', arc)
-      .attr('fill', colors(i))
-      .attr('class', selectedIndex === i ? 'selected' : '')
-      .on('click', () => {
-        selectedIndex = selectedIndex === i ? -1 : i;
+    slice.setAttribute('fill', colors[i % colors.length]);
+    slice.classList.toggle('selected', selectedIndex === i);
+    slice.addEventListener('click', () => {
+      selectedIndex = selectedIndex === i ? -1 : i;
 
-        updateProjectsFromFilters(data);
-        renderPieChart(getFilteredProjects());
-      });
+      updateProjectsFromFilters(data);
+      renderPieChart(getFilteredProjects());
+    });
+
+    svg.append(slice);
+    startAngle = endAngle;
   });
 
   data.forEach((d, i) => {
-    legend
-      .append('li')
-      .attr('style', `--color: ${colors(i)}`)
-      .attr('class', selectedIndex === i ? 'legend-item selected' : 'legend-item')
-      .html(`<span class="swatch"></span> ${d.label} <em>(${d.value})</em>`)
-      .on('click', () => {
-        selectedIndex = selectedIndex === i ? -1 : i;
+    const item = document.createElement('li');
+    const swatch = document.createElement('span');
+    const count = document.createElement('em');
 
-        updateProjectsFromFilters(data);
-        renderPieChart(getFilteredProjects());
-      });
+    item.className = selectedIndex === i ? 'legend-item selected' : 'legend-item';
+    item.style.setProperty('--color', colors[i % colors.length]);
+
+    swatch.className = 'swatch';
+    count.textContent = `(${d.value})`;
+
+    item.append(swatch, document.createTextNode(` ${d.label} `), count);
+    item.addEventListener('click', () => {
+      selectedIndex = selectedIndex === i ? -1 : i;
+
+      updateProjectsFromFilters(data);
+      renderPieChart(getFilteredProjects());
+    });
+
+    legend.append(item);
   });
+}
+
+function getCategoryData(projectsGiven) {
+  const counts = new Map();
+
+  for (const project of projectsGiven) {
+    const category = project.category || 'Other';
+    counts.set(category, (counts.get(category) || 0) + 1);
+  }
+
+  return Array.from(counts, ([label, value]) => ({ label, value }));
+}
+
+function describeSlice(startAngle, endAngle) {
+  const start = getPointOnCircle(endAngle);
+  const end = getPointOnCircle(startAngle);
+  const largeArcFlag = endAngle - startAngle > Math.PI ? 1 : 0;
+
+  return `M 0 0 L ${start.x} ${start.y} A 50 50 0 ${largeArcFlag} 0 ${end.x} ${end.y} Z`;
+}
+
+function getPointOnCircle(angle) {
+  return {
+    x: Math.cos(angle) * 50,
+    y: Math.sin(angle) * 50,
+  };
 }
 
 function updateProjectsFromFilters(data) {
   let filteredProjects = getFilteredProjects();
 
   if (selectedIndex !== -1) {
-    let selectedYear = data[selectedIndex].label;
+    let selectedCategory = data[selectedIndex].label;
 
     filteredProjects = filteredProjects.filter((project) => {
-      return project.year === selectedYear;
+      return project.category === selectedCategory;
     });
   }
 
-  projectsTitle.textContent = `${filteredProjects.length} Projects`;
+  updateProjectsTitle(filteredProjects.length);
   renderProjects(filteredProjects, projectsContainer, 'h2');
 }
 
@@ -97,7 +138,7 @@ searchInput.addEventListener('input', (event) => {
 
   const filteredProjects = getFilteredProjects();
 
-  projectsTitle.textContent = `${filteredProjects.length} Projects`;
+  updateProjectsTitle(filteredProjects.length);
   renderProjects(filteredProjects, projectsContainer, 'h2');
   renderPieChart(filteredProjects);
 });
